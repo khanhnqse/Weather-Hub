@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weather App
+
+A beautiful weather application built with Next.js and TailwindCSS that allows users to check current weather conditions for any city worldwide.
+
+## Features
+
+- 🌤️ Real-time weather data from OpenWeatherMap API
+- 🎨 Beautiful, responsive UI with TailwindCSS
+- 🌍 Support for cities worldwide
+- 📱 Mobile-friendly design
+- ⚡ Fast and efficient with Next.js
+- 🇻🇳 Vietnamese language support
+- 🔍 Detailed weather information including:
+  - Current temperature
+  - Weather description
+  - "Feels like" temperature
+  - Humidity
+  - Wind speed
+  - Weather conditions
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (version 14 or higher)
+- npm or yarn
+- OpenWeatherMap API key
+
+### Installation
+
+1. Clone the repository or download the project files
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Get your free API key from [OpenWeatherMap](https://openweathermap.org/api)
+
+4. Create a `.env.local` file in the root directory and add your API key:
+
+```
+NEXT_PUBLIC_WEATHER_API_KEY=your_api_key_here
+```
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter the name of any city in the search box
+2. Click the "Tìm kiếm" (Search) button
+3. View the current weather information for that city
+4. If the city is not found, an error message will be displayed
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+This application uses the OpenWeatherMap API to fetch weather data:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Endpoint: `https://api.openweathermap.org/data/2.5/weather`
+- Parameters: city name, API key, metric units, Vietnamese language
+- Response: JSON with weather data including temperature, description, humidity, wind speed, etc.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technologies Used
 
-## Deploy on Vercel
+- **Next.js 15** - React framework for production
+- **React 19** - JavaScript library for building user interfaces
+- **TypeScript** - Typed JavaScript for better development experience
+- **TailwindCSS 4** - Utility-first CSS framework
+- **OpenWeatherMap API** - Weather data provider
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+my-weather/
+├── src/
+│   └── app/
+│       ├── page.tsx          # Main weather app component
+│       ├── layout.tsx         # App layout
+│       └── globals.css        # Global styles
+├── public/                    # Static files
+├── .env.local                 # Environment variables (API key)
+├── package.json              # Dependencies and scripts
+└── README.md                 # This file
+```
+
+## Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```
+NEXT_PUBLIC_WEATHER_API_KEY=your_openweathermap_api_key
+```
+
+## Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Contributing
+
+Feel free to submit issues and pull requests to improve the application.
+
+## License
+
+This project is open source and available under the MIT License.
