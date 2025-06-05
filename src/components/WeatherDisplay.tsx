@@ -2,6 +2,7 @@ import { WeatherData } from "../types/weather";
 import { WeatherCard } from "./WeatherCard";
 import { TemperatureRange } from "./TemperatureRange";
 import { WeatherIcons } from "./WeatherIcons";
+import { RealTimeClock } from "./RealTimeClock";
 
 interface WeatherDisplayProps {
   weather: WeatherData;
@@ -43,8 +44,10 @@ export const WeatherDisplay = ({ weather }: WeatherDisplayProps) => {
             <p className="text-white/90 capitalize text-lg font-medium">
               {weather.weather[0].description}
             </p>
-          </div>
+          </div>{" "}
         </div>
+
+        <RealTimeClock timezone={weather.timezone} cityName={weather.name} />
 
         <TemperatureRange
           tempMin={weather.main.temp_min}

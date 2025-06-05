@@ -26,10 +26,10 @@ export interface WeatherData {
     country: string;
     sunrise: number;
     sunset: number;
-  };
-  coord: {
+  };  coord: {
     lat: number;
     lon: number;
   };
   dt: number;
+  timezone: number; // Timezone offset in seconds from UTC
 }
