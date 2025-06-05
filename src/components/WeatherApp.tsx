@@ -6,6 +6,7 @@ import { AppHeader } from "./AppHeader";
 import { SearchForm } from "./SearchForm";
 import { ErrorMessage } from "./ErrorMessage";
 import { WeatherDisplay } from "./WeatherDisplay";
+import { DynamicBackground } from "./DynamicBackground";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
@@ -61,22 +62,27 @@ export default function WeatherApp() {
     e.preventDefault();
     fetchWeather();
   };
-
   return (
     <>
-      <AppHeader />
+      {/* Dynamic weather background */}
+      <DynamicBackground weather={weather} />
 
-      <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
-        <SearchForm
-          city={city}
-          setCity={setCity}
-          onSubmit={handleSubmit}
-          loading={loading}
-        />
+      {/* Main content with relative positioning to appear above background */}
+      <div className="relative z-10">
+        <AppHeader />
 
-        {error && <ErrorMessage error={error} />}
+        <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
+          <SearchForm
+            city={city}
+            setCity={setCity}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
 
-        {weather && <WeatherDisplay weather={weather} />}
+          {error && <ErrorMessage error={error} />}
+
+          {weather && <WeatherDisplay weather={weather} />}
+        </div>
       </div>
     </>
   );
