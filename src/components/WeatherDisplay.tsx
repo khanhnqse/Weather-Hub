@@ -28,7 +28,8 @@ export const WeatherDisplay = ({
   const maxTemp = getTemperatureInUnit(weather.main.temp_max, temperatureUnit);
 
   return (
-    <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 animate-scaleIn">
+    //  <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 animate-scaleIn"></div>
+    <div className="rounded-2xl p-6 animate-scaleIn backdrop-blur-lg">
       <div className="text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
           <svg
