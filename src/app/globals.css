@@ -102,3 +102,40 @@ html {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Radial gradient utilities for dynamic backgrounds */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-t {
+  background: radial-gradient(circle at top, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-tr {
+  background: radial-gradient(circle at top right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-r {
+  background: radial-gradient(circle at right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-br {
+  background: radial-gradient(circle at bottom right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-b {
+  background: radial-gradient(circle at bottom, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-bl {
+  background: radial-gradient(circle at bottom left, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-l {
+  background: radial-gradient(circle at left, var(--tw-gradient-stops));
+}
+
+.bg-gradient-radial-at-tl {
+  background: radial-gradient(circle at top left, var(--tw-gradient-stops));
+}
