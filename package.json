@@ -1,7 +1,28 @@
 {
-  "name": "my-weather",
-  "version": "0.1.0",
-  "private": true,
+  "name": "weatherhub",
+  "version": "1.0.0",
+  "description": "Modern weather application with beautiful UI, temperature unit toggle, 5-day forecast, and location-based weather detection",
+  "private": false,
+  "license": "MIT",
+  "author": "WeatherHub Team",
+  "keywords": [
+    "weather",
+    "forecast",
+    "temperature",
+    "location",
+    "nextjs",
+    "react",
+    "typescript",
+    "tailwindcss"
+  ],
+  "homepage": "https://github.com/yourusername/weatherhub",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/weatherhub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/weatherhub/issues"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
