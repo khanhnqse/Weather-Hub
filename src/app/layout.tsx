@@ -16,6 +16,17 @@ export const metadata: Metadata = {
   title: "WeatherHub - Khám phá thời tiết toàn cầu",
   description:
     "Ứng dụng thời tiết hiện đại với giao diện đẹp, cung cấp thông tin thời tiết chính xác cho mọi thành phố trên thế giới.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: "/favicon.svg",
+  },
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: "#3b82f6",
 };
 
 export default function RootLayout({
@@ -25,6 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="alternate icon" href="/favicon.svg" />
+        <link rel="mask-icon" href="/favicon.svg" color="#3b82f6" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
