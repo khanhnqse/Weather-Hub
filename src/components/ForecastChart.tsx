@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -47,18 +47,56 @@ interface DailyForecast {
   icon: string;
 }
 
-export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureUnit }) => {
-  const [forecastData, setForecastData] = useState<DailyForecast[]>([]);
+export const ForecastChart: React.FC<ForecastChartProps> = ({
+  city,
+  temperatureUnit,
+}) => {
+  const [rawForecastData, setRawForecastData] = useState<ForecastItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  // Process forecast data into daily summaries
-  const processForecastData = useCallback((
-    forecastList: ForecastItem[]
-  ): DailyForecast[] => {
+
+  // Fetch 5-day forecast data (only depends on city)
+  const fetchForecast = useCallback(async () => {
+    if (!city.trim()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
+          city
+        )}&appid=${apiKey}&units=metric&lang=vi`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch forecast data");
+      }
+
+      const data: ForecastData = await response.json();
+
+      // Store raw forecast data
+      setRawForecastData(data.list);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }, [city]);
+
+  // Process forecast data into daily summaries (depends on raw data and temperature unit)
+  const forecastData = useMemo((): DailyForecast[] => {
+    if (rawForecastData.length === 0) return [];
+
     const dailyData: { [key: string]: ForecastItem[] } = {};
 
     // Group forecast items by date
-    forecastList.forEach((item) => {
+    rawForecastData.forEach((item) => {
       const date = new Date(item.dt * 1000);
       const dateKey = date.toISOString().split("T")[0];
 
@@ -104,7 +142,7 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureU
 
         const dateObj = new Date(date);
         const day = dateObj.toLocaleDateString("vi-VN", { weekday: "short" });
-        
+
         return {
           date,
           day,
@@ -117,41 +155,7 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureU
           icon: mostCommonWeather.icon,
         };
       });
-  }, [temperatureUnit]);
-
-  // Fetch 5-day forecast data
-  const fetchForecast = useCallback(async () => {
-    if (!city.trim()) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
-      if (!apiKey) {
-        throw new Error("API key not found");
-      }
-
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-          city
-        )}&appid=${apiKey}&units=metric&lang=vi`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch forecast data");
-      }
-
-      const data: ForecastData = await response.json();
-
-      // Process forecast data to get daily summaries
-      const dailyForecasts = processForecastData(data.list);
-      setForecastData(dailyForecasts);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }  }, [city, processForecastData]);
+  }, [rawForecastData, temperatureUnit]);
 
   // Fetch forecast when city changes
   useEffect(() => {
@@ -160,7 +164,7 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureU
     }
   }, [city, fetchForecast]);
   // Get temperature unit symbol
-  const unitSymbol = temperatureUnit === 'celsius' ? '°C' : '°F';
+  const unitSymbol = temperatureUnit === "celsius" ? "°C" : "°F";
 
   // Chart configuration
   const chartData = {
@@ -273,10 +277,12 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureU
           color: "white",
           font: {
             size: 12,
-          },          callback: function (value: string | number) {
+          },
+          callback: function (value: string | number) {
             return value + unitSymbol;
           },
-        },        title: {
+        },
+        title: {
           display: true,
           text: `Nhiệt độ (${unitSymbol})`,
           color: "white",
@@ -356,10 +362,15 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureU
                 height={48}
                 className="mx-auto"
               />
-            </div>            <div className="text-white text-lg font-bold mb-1">
-              {day.maxTemp}{unitSymbol.charAt(0)}
+            </div>{" "}
+            <div className="text-white text-lg font-bold mb-1">
+              {day.maxTemp}
+              {unitSymbol.charAt(0)}
             </div>
-            <div className="text-white/70 text-sm mb-2">{day.minTemp}{unitSymbol.charAt(0)}</div>
+            <div className="text-white/70 text-sm mb-2">
+              {day.minTemp}
+              {unitSymbol.charAt(0)}
+            </div>
             <div className="text-white/60 text-xs">
               <div>💧 {day.humidity}%</div>
               {day.precipitation > 0 && <div>🌧️ {day.precipitation}%</div>}

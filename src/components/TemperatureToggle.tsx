@@ -7,10 +7,15 @@ interface TemperatureToggleProps {
   onToggle: (unit: "celsius" | "fahrenheit") => void;
 }
 
-export const TemperatureToggle = ({ unit, onToggle }: TemperatureToggleProps) => {
+export const TemperatureToggle = ({
+  unit,
+  onToggle,
+}: TemperatureToggleProps) => {
   return (
     <div className="flex items-center gap-3 mb-4">
-      <span className="text-white/80 text-sm font-medium">Đơn vị nhiệt độ:</span>
+      <span className="text-white/80 text-sm font-medium">
+        Đơn vị nhiệt độ:
+      </span>
       <div className="relative bg-white/10 backdrop-blur-lg rounded-full p-1 border border-white/20">
         <motion.div
           className="absolute top-1 bottom-1 bg-white/30 backdrop-blur-sm rounded-full"
@@ -27,7 +32,7 @@ export const TemperatureToggle = ({ unit, onToggle }: TemperatureToggleProps) =>
             damping: 30,
           }}
         />
-        
+
         <div className="relative flex">
           <button
             onClick={() => onToggle("celsius")}

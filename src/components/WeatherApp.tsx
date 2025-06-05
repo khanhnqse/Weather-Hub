@@ -13,11 +13,12 @@ import { TemperatureUnit } from "@/utils/temperature";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
+  const [searchedCity, setSearchedCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [temperatureUnit, setTemperatureUnit] = useState<TemperatureUnit>("celsius");
-
+  const [temperatureUnit, setTemperatureUnit] =
+    useState<TemperatureUnit>("celsius");
   const fetchWeather = async () => {
     if (!city.trim()) {
       setError("Vui lòng nhập tên thành phố");
@@ -53,6 +54,7 @@ export default function WeatherApp() {
 
       const data: WeatherData = await response.json();
       setWeather(data);
+      setSearchedCity(city); // Set the searched city only after successful weather fetch
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Đã xảy ra lỗi không xác định"
@@ -65,7 +67,8 @@ export default function WeatherApp() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchWeather();
-  };  return (
+  };
+  return (
     <>
       {/* Dynamic weather background */}
       <DynamicBackground weather={weather} />
@@ -73,37 +76,35 @@ export default function WeatherApp() {
       {/* Main content with relative positioning to appear above background */}
       <div className="relative z-10">
         <AppHeader />
-
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
           {/* Temperature Unit Toggle */}
-          <TemperatureToggle 
-            unit={temperatureUnit} 
-            onToggle={setTemperatureUnit} 
+          <TemperatureToggle
+            unit={temperatureUnit}
+            onToggle={setTemperatureUnit}
           />
-          
+
           <SearchForm
             city={city}
             setCity={setCity}
             onSubmit={handleSubmit}
             loading={loading}
           />
-          
+
           {error && <ErrorMessage error={error} />}
 
           {weather && (
-            <WeatherDisplay 
-              weather={weather} 
-              temperatureUnit={temperatureUnit} 
+            <WeatherDisplay
+              weather={weather}
+              temperatureUnit={temperatureUnit}
             />
           )}
-        </div>
-
+        </div>{" "}
         {/* 5-day forecast chart - only show when we have weather data */}
-        {weather && (
+        {weather && searchedCity && (
           <div className="mb-8">
-            <ForecastChart 
-              city={city} 
-              temperatureUnit={temperatureUnit} 
+            <ForecastChart
+              city={searchedCity}
+              temperatureUnit={temperatureUnit}
             />
           </div>
         )}
