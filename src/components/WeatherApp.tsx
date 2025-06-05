@@ -7,6 +7,7 @@ import { SearchForm } from "./SearchForm";
 import { ErrorMessage } from "./ErrorMessage";
 import { WeatherDisplay } from "./WeatherDisplay";
 import { DynamicBackground } from "./DynamicBackground";
+import { ForecastChart } from "./ForecastChart";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
@@ -77,12 +78,17 @@ export default function WeatherApp() {
             setCity={setCity}
             onSubmit={handleSubmit}
             loading={loading}
-          />
-
+          />{" "}
           {error && <ErrorMessage error={error} />}
-
           {weather && <WeatherDisplay weather={weather} />}
         </div>
+
+        {/* 5-day forecast chart - only show when we have weather data */}
+        {weather && (
+          <div className="mb-8">
+            <ForecastChart city={city} />
+          </div>
+        )}
       </div>
     </>
   );

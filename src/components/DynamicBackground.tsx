@@ -13,17 +13,12 @@ interface DynamicBackgroundProps {
 const getWeatherTheme = (weatherCondition: string) => {
   const condition = weatherCondition.toLowerCase();
 
-  // Debug logging to understand what conditions we're getting
-  console.log("🌤️ Weather condition received:", weatherCondition);
-  console.log("🌤️ Lowercase condition:", condition);
-
   // Clear sky conditions
   if (
     condition.includes("clear") ||
     condition.includes("sunny") ||
     condition === "clear sky"
   ) {
-    console.log("🌞 Matched sunny condition");
     return {
       gradient: "from-amber-300 via-orange-400 to-blue-400",
       particles: "sunny",
@@ -42,7 +37,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     condition.includes("moderate rain") ||
     condition.includes("heavy rain")
   ) {
-    console.log("🌧️ Matched rain condition");
     return {
       gradient: "from-slate-600 via-blue-700 to-indigo-900",
       particles: "rain",
@@ -57,7 +51,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     condition.includes("sleet") ||
     condition.includes("freezing")
   ) {
-    console.log("❄️ Matched snow condition");
     return {
       gradient: "from-slate-200 via-blue-200 to-slate-400",
       particles: "snow",
@@ -71,7 +64,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     condition.includes("thunder") ||
     condition.includes("storm")
   ) {
-    console.log("⚡ Matched thunderstorm condition");
     return {
       gradient: "from-slate-800 via-purple-900 to-black",
       particles: "lightning",
@@ -88,7 +80,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     condition.includes("scattered clouds") ||
     condition.includes("broken clouds")
   ) {
-    console.log("☁️ Matched cloudy condition");
     return {
       gradient: "from-gray-400 via-slate-500 to-gray-600",
       particles: "clouds",
@@ -109,7 +100,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     condition.includes("smoke") ||
     condition.includes("dust")
   ) {
-    console.log("🌫️ Matched atmospheric condition");
     return {
       gradient: "from-gray-300 via-blue-200 to-slate-400",
       particles: "fog",
@@ -117,7 +107,6 @@ const getWeatherTheme = (weatherCondition: string) => {
     };
   }
 
-  console.log("❓ No condition matched, using default blue theme");
   return {
     gradient: "from-blue-400 via-blue-500 to-blue-600",
     particles: "default",
@@ -736,18 +725,13 @@ const renderWeatherParticles = (particleType: string) => {
 
 export const DynamicBackground = memo(({ weather }: DynamicBackgroundProps) => {
   const [currentTheme, setCurrentTheme] = useState(getWeatherTheme("clear"));
-
   useEffect(() => {
-    console.log("🌍 Weather data received:", weather);
     if (weather && weather.weather && weather.weather.length > 0) {
-      console.log("🌍 Weather description:", weather.weather[0].description);
-      console.log("🌍 Weather main:", weather.weather[0].main);
       // Use the main property for more reliable matching, fall back to description
       const condition =
         weather.weather[0].main || weather.weather[0].description;
       setCurrentTheme(getWeatherTheme(condition));
     } else {
-      console.log("🌍 No weather data, using default clear theme");
       setCurrentTheme(getWeatherTheme("clear"));
     }
   }, [weather]);

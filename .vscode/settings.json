@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "weatherApp",
-        "RealTimeClock"
+        "RealTimeClock",
+        "FarecastChart"
     ]
 }
