@@ -10,6 +10,7 @@ import { DynamicBackground } from "./DynamicBackground";
 import { ForecastChart } from "./ForecastChart";
 import { TemperatureToggle } from "./TemperatureToggle";
 import { TemperatureUnit } from "@/utils/temperature";
+import { useRecentSearches } from "@/hooks/useRecentSearches";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
@@ -19,6 +20,9 @@ export default function WeatherApp() {
   const [error, setError] = useState("");
   const [temperatureUnit, setTemperatureUnit] =
     useState<TemperatureUnit>("celsius");
+  
+  // Recent searches functionality
+  const { recentSearches, addRecentSearch, clearRecentSearches } = useRecentSearches();
   const fetchWeather = async () => {
     if (!city.trim()) {
       setError("Vui lòng nhập tên thành phố");
@@ -50,11 +54,10 @@ export default function WeatherApp() {
           );
         }
         throw new Error("Đã xảy ra lỗi khi lấy dữ liệu thời tiết.");
-      }
-
-      const data: WeatherData = await response.json();
+      }      const data: WeatherData = await response.json();
       setWeather(data);
       setSearchedCity(city); // Set the searched city only after successful weather fetch
+      addRecentSearch(city); // Add to recent searches on successful fetch
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Đã xảy ra lỗi không xác định"
@@ -63,10 +66,15 @@ export default function WeatherApp() {
       setLoading(false);
     }
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchWeather();
+  };
+  // Handle selecting a recent search
+  const handleRecentSearchSelect = (selectedCity: string) => {
+    setCity(selectedCity);
+    // We'll let the user submit manually or auto-submit
+    setError("");
   };
   return (
     <>
@@ -81,13 +89,14 @@ export default function WeatherApp() {
           <TemperatureToggle
             unit={temperatureUnit}
             onToggle={setTemperatureUnit}
-          />
-
-          <SearchForm
+          />          <SearchForm
             city={city}
             setCity={setCity}
             onSubmit={handleSubmit}
             loading={loading}
+            recentSearches={recentSearches}
+            onSearchSelect={handleRecentSearchSelect}
+            onClearRecentSearches={clearRecentSearches}
           />
 
           {error && <ErrorMessage error={error} />}

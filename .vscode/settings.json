@@ -3,6 +3,7 @@
         "weatherApp",
         "RealTimeClock",
         "FarecastChart",
-        "temperatureToggle"
+        "temperatureToggle",
+        "recentSearch"
     ]
 }
