@@ -20,9 +20,10 @@ export default function WeatherApp() {
   const [error, setError] = useState("");
   const [temperatureUnit, setTemperatureUnit] =
     useState<TemperatureUnit>("celsius");
-  
+
   // Recent searches functionality
-  const { recentSearches, addRecentSearch, clearRecentSearches } = useRecentSearches();
+  const { recentSearches, addRecentSearch, clearRecentSearches } =
+    useRecentSearches();
   const fetchWeather = async () => {
     if (!city.trim()) {
       setError("Vui lòng nhập tên thành phố");
@@ -54,7 +55,8 @@ export default function WeatherApp() {
           );
         }
         throw new Error("Đã xảy ra lỗi khi lấy dữ liệu thời tiết.");
-      }      const data: WeatherData = await response.json();
+      }
+      const data: WeatherData = await response.json();
       setWeather(data);
       setSearchedCity(city); // Set the searched city only after successful weather fetch
       addRecentSearch(city); // Add to recent searches on successful fetch
@@ -89,7 +91,8 @@ export default function WeatherApp() {
           <TemperatureToggle
             unit={temperatureUnit}
             onToggle={setTemperatureUnit}
-          />          <SearchForm
+          />{" "}
+          <SearchForm
             city={city}
             setCity={setCity}
             onSubmit={handleSubmit}
@@ -98,9 +101,7 @@ export default function WeatherApp() {
             onSearchSelect={handleRecentSearchSelect}
             onClearRecentSearches={clearRecentSearches}
           />
-
           {error && <ErrorMessage error={error} />}
-
           {weather && (
             <WeatherDisplay
               weather={weather}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface RecentSearchesProps {
   searches: string[];
@@ -12,7 +12,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
   searches,
   onSearchSelect,
   onClear,
-  className = ""
+  className = "",
 }) => {
   if (searches.length === 0) {
     return null;
@@ -34,7 +34,7 @@ export const RecentSearches: React.FC<RecentSearchesProps> = ({
           Xóa tất cả
         </button>
       </div>
-      
+
       <div className="space-y-2">
         <AnimatePresence>
           {searches.map((city, index) => (

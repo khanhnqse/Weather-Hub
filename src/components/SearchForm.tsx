@@ -1,5 +1,5 @@
-import React from 'react';
-import { RecentSearches } from './RecentSearches';
+import React from "react";
+import { RecentSearches } from "./RecentSearches";
 
 interface SearchFormProps {
   city: string;
@@ -19,7 +19,8 @@ export const SearchForm = ({
   recentSearches = [],
   onSearchSelect,
   onClearRecentSearches,
-}: SearchFormProps) => {  return (
+}: SearchFormProps) => {
+  return (
     <div className="mb-8">
       <form onSubmit={onSubmit}>
         <div className="relative group">
@@ -73,7 +74,7 @@ export const SearchForm = ({
           </button>
         </div>
       </form>
-      
+
       {/* Recent Searches */}
       {recentSearches.length > 0 && onSearchSelect && onClearRecentSearches && (
         <RecentSearches
