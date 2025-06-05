@@ -8,12 +8,15 @@ import { ErrorMessage } from "./ErrorMessage";
 import { WeatherDisplay } from "./WeatherDisplay";
 import { DynamicBackground } from "./DynamicBackground";
 import { ForecastChart } from "./ForecastChart";
+import { TemperatureToggle } from "./TemperatureToggle";
+import { TemperatureUnit } from "@/utils/temperature";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [temperatureUnit, setTemperatureUnit] = useState<TemperatureUnit>("celsius");
 
   const fetchWeather = async () => {
     if (!city.trim()) {
@@ -62,8 +65,7 @@ export default function WeatherApp() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchWeather();
-  };
-  return (
+  };  return (
     <>
       {/* Dynamic weather background */}
       <DynamicBackground weather={weather} />
@@ -73,20 +75,36 @@ export default function WeatherApp() {
         <AppHeader />
 
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
+          {/* Temperature Unit Toggle */}
+          <TemperatureToggle 
+            unit={temperatureUnit} 
+            onToggle={setTemperatureUnit} 
+          />
+          
           <SearchForm
             city={city}
             setCity={setCity}
             onSubmit={handleSubmit}
             loading={loading}
-          />{" "}
+          />
+          
           {error && <ErrorMessage error={error} />}
-          {weather && <WeatherDisplay weather={weather} />}
+
+          {weather && (
+            <WeatherDisplay 
+              weather={weather} 
+              temperatureUnit={temperatureUnit} 
+            />
+          )}
         </div>
 
         {/* 5-day forecast chart - only show when we have weather data */}
         {weather && (
           <div className="mb-8">
-            <ForecastChart city={city} />
+            <ForecastChart 
+              city={city} 
+              temperatureUnit={temperatureUnit} 
+            />
           </div>
         )}
       </div>

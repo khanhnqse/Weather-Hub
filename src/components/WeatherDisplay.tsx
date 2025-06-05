@@ -3,12 +3,20 @@ import { WeatherCard } from "./WeatherCard";
 import { TemperatureRange } from "./TemperatureRange";
 import { WeatherIcons } from "./WeatherIcons";
 import { RealTimeClock } from "./RealTimeClock";
+import { TemperatureUnit, getTemperatureInUnit, formatTemperature } from "../utils/temperature";
 
 interface WeatherDisplayProps {
   weather: WeatherData;
+  temperatureUnit: TemperatureUnit;
 }
 
-export const WeatherDisplay = ({ weather }: WeatherDisplayProps) => {
+export const WeatherDisplay = ({ weather, temperatureUnit }: WeatherDisplayProps) => {
+  // Convert temperatures from Celsius (API default) to the selected unit
+  const currentTemp = getTemperatureInUnit(weather.main.temp, temperatureUnit);
+  const feelsLikeTemp = getTemperatureInUnit(weather.main.feels_like, temperatureUnit);
+  const minTemp = getTemperatureInUnit(weather.main.temp_min, temperatureUnit);
+  const maxTemp = getTemperatureInUnit(weather.main.temp_max, temperatureUnit);
+
   return (
     <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20 animate-scaleIn">
       <div className="text-center">
@@ -33,32 +41,30 @@ export const WeatherDisplay = ({ weather }: WeatherDisplayProps) => {
             />
           </svg>
           <h2 className="text-2xl font-bold text-white">{weather.name}</h2>
-        </div>
-
-        <div className="mb-6">
+        </div>        <div className="mb-6">
           <div className="text-7xl font-black text-white mb-2 drop-shadow-lg animate-fadeInUp">
-            {Math.round(weather.main.temp)}°
+            {formatTemperature(currentTemp, temperatureUnit, false)}
           </div>
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-lg px-4 py-2 rounded-full">
             <div className="w-2 h-2 bg-blue-300 rounded-full animate-pulse"></div>
             <p className="text-white/90 capitalize text-lg font-medium">
               {weather.weather[0].description}
             </p>
-          </div>{" "}
+          </div>
         </div>
 
         <RealTimeClock timezone={weather.timezone} cityName={weather.name} />
 
         <TemperatureRange
-          tempMin={weather.main.temp_min}
-          tempMax={weather.main.temp_max}
+          tempMin={minTemp}
+          tempMax={maxTemp}
+          temperatureUnit={temperatureUnit}
         />
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <WeatherCard
+        <div className="grid grid-cols-2 gap-4 mb-6">          <WeatherCard
             icon={<WeatherIcons.FeelsLike />}
             label="Cảm giác như"
-            value={`${Math.round(weather.main.feels_like)}°C`}
+            value={formatTemperature(feelsLikeTemp, temperatureUnit)}
           />
 
           <WeatherCard

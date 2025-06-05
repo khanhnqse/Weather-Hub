@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "weatherApp",
         "RealTimeClock",
-        "FarecastChart"
+        "FarecastChart",
+        "temperatureToggle"
     ]
 }

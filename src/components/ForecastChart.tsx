@@ -16,6 +16,7 @@ import {
 import { Line } from "react-chartjs-2";
 import Image from "next/image";
 import { ForecastData, ForecastItem } from "@/types/weather";
+import { TemperatureUnit, getTemperatureInUnit } from "@/utils/temperature";
 
 // Register Chart.js components
 ChartJS.register(
@@ -31,6 +32,7 @@ ChartJS.register(
 
 interface ForecastChartProps {
   city: string;
+  temperatureUnit: TemperatureUnit;
 }
 
 interface DailyForecast {
@@ -45,48 +47,12 @@ interface DailyForecast {
   icon: string;
 }
 
-export const ForecastChart: React.FC<ForecastChartProps> = ({ city }) => {
+export const ForecastChart: React.FC<ForecastChartProps> = ({ city, temperatureUnit }) => {
   const [forecastData, setForecastData] = useState<DailyForecast[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // Fetch 5-day forecast data
-  const fetchForecast = useCallback(async () => {
-    if (!city.trim()) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
-      if (!apiKey) {
-        throw new Error("API key not found");
-      }
-
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-          city
-        )}&appid=${apiKey}&units=metric&lang=vi`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch forecast data");
-      }
-
-      const data: ForecastData = await response.json();
-
-      // Process forecast data to get daily summaries
-      const dailyForecasts = processForecastData(data.list);
-      setForecastData(dailyForecasts);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  }, [city]);
-
   // Process forecast data into daily summaries
-  const processForecastData = (
+  const processForecastData = useCallback((
     forecastList: ForecastItem[]
   ): DailyForecast[] => {
     const dailyData: { [key: string]: ForecastItem[] } = {};
@@ -138,33 +104,70 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city }) => {
 
         const dateObj = new Date(date);
         const day = dateObj.toLocaleDateString("vi-VN", { weekday: "short" });
-
+        
         return {
           date,
           day,
-          minTemp: Math.round(minTemp),
-          maxTemp: Math.round(maxTemp),
-          avgTemp: Math.round(avgTemp),
+          minTemp: Math.round(getTemperatureInUnit(minTemp, temperatureUnit)),
+          maxTemp: Math.round(getTemperatureInUnit(maxTemp, temperatureUnit)),
+          avgTemp: Math.round(getTemperatureInUnit(avgTemp, temperatureUnit)),
           humidity: Math.round(humidity),
           precipitation: Math.round(precipitation),
           weather: mostCommonWeather.description,
           icon: mostCommonWeather.icon,
         };
       });
-  };
+  }, [temperatureUnit]);
+
+  // Fetch 5-day forecast data
+  const fetchForecast = useCallback(async () => {
+    if (!city.trim()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+      if (!apiKey) {
+        throw new Error("API key not found");
+      }
+
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
+          city
+        )}&appid=${apiKey}&units=metric&lang=vi`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch forecast data");
+      }
+
+      const data: ForecastData = await response.json();
+
+      // Process forecast data to get daily summaries
+      const dailyForecasts = processForecastData(data.list);
+      setForecastData(dailyForecasts);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
+    }  }, [city, processForecastData]);
+
   // Fetch forecast when city changes
   useEffect(() => {
     if (city) {
       fetchForecast();
     }
   }, [city, fetchForecast]);
+  // Get temperature unit symbol
+  const unitSymbol = temperatureUnit === 'celsius' ? '°C' : '°F';
 
   // Chart configuration
   const chartData = {
     labels: forecastData.map((day) => day.day),
     datasets: [
       {
-        label: "Nhiệt độ tối đa (°C)",
+        label: `Nhiệt độ tối đa (${unitSymbol})`,
         data: forecastData.map((day) => day.maxTemp),
         borderColor: "rgb(239, 68, 68)",
         backgroundColor: "rgba(239, 68, 68, 0.1)",
@@ -176,7 +179,7 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city }) => {
         pointRadius: 6,
       },
       {
-        label: "Nhiệt độ tối thiểu (°C)",
+        label: `Nhiệt độ tối thiểu (${unitSymbol})`,
         data: forecastData.map((day) => day.minTemp),
         borderColor: "rgb(59, 130, 246)",
         backgroundColor: "rgba(59, 130, 246, 0.1)",
@@ -270,14 +273,12 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city }) => {
           color: "white",
           font: {
             size: 12,
+          },          callback: function (value: string | number) {
+            return value + unitSymbol;
           },
-          callback: function (value: string | number) {
-            return value + "°C";
-          },
-        },
-        title: {
+        },        title: {
           display: true,
-          text: "Nhiệt độ (°C)",
+          text: `Nhiệt độ (${unitSymbol})`,
           color: "white",
         },
       },
@@ -355,11 +356,10 @@ export const ForecastChart: React.FC<ForecastChartProps> = ({ city }) => {
                 height={48}
                 className="mx-auto"
               />
+            </div>            <div className="text-white text-lg font-bold mb-1">
+              {day.maxTemp}{unitSymbol.charAt(0)}
             </div>
-            <div className="text-white text-lg font-bold mb-1">
-              {day.maxTemp}°
-            </div>
-            <div className="text-white/70 text-sm mb-2">{day.minTemp}°</div>
+            <div className="text-white/70 text-sm mb-2">{day.minTemp}{unitSymbol.charAt(0)}</div>
             <div className="text-white/60 text-xs">
               <div>💧 {day.humidity}%</div>
               {day.precipitation > 0 && <div>🌧️ {day.precipitation}%</div>}
