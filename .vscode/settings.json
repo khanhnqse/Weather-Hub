@@ -4,6 +4,7 @@
         "RealTimeClock",
         "FarecastChart",
         "temperatureToggle",
-        "recentSearch"
+        "recentSearch",
+        "footer"
     ]
 }
