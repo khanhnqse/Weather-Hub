@@ -38,7 +38,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      }    >
+      }
+    >
       <div className="min-h-screen relative overflow-hidden flex flex-col bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600">
         <div className="flex-1">
           <MainContainer>

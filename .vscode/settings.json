@@ -5,6 +5,7 @@
         "FarecastChart",
         "temperatureToggle",
         "recentSearch",
-        "footer"
+        "footer",
+        "searchLocation"
     ]
 }
