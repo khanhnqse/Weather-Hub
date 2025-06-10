@@ -21,6 +21,11 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
 - 🔍 **Recent Searches** - Store and quickly access previously searched cities
 - 💾 **Local Storage** - Persistent recent searches across browser sessions
 - 🎯 **Smart Data Management** - Optimized API calls and data processing
+- 🤖 **AI Weather Assistant** - Intelligent weather insights and interactive chat
+- 💬 **Natural Language Queries** - Ask questions about weather in Vietnamese
+- 🧠 **Smart Recommendations** - AI-powered outfit, activity, and health advice
+- 📱 **Progressive Web App** - Installable on mobile devices
+- 📍 **Geolocation Support** - Optional automatic location detection
 - 🔍 Detailed weather information including:
   - Current temperature (with unit conversion)
   - Weather description
@@ -56,6 +61,21 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
 - Persistent across browser sessions
 - Easy clear functionality
 
+### 🤖 AI Weather Assistant
+
+- **Smart Insights**: AI analyzes weather conditions and provides personalized recommendations
+- **Interactive Chat**: Ask natural language questions about weather conditions
+- **Contextual Advice**: Get outfit suggestions, activity recommendations, and health tips
+- **Dual AI Modes**: Local pattern-based AI (free) or Google Gemini integration (advanced)
+- **Vietnamese Language**: Full AI responses in Vietnamese language
+
+### 📍 Geolocation Features
+
+- **Optional Location Access**: User-friendly permission prompts
+- **Automatic Weather Loading**: Display weather for current location
+- **Privacy-First**: Location access is completely optional
+- **Fallback Support**: Graceful degradation when location is unavailable
+
 ### ⚡ Performance Optimizations
 
 - Smart API call management (prevents unnecessary requests)
@@ -84,13 +104,18 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
 npm install
 ```
 
-3. Get your free API key from [OpenWeatherMap](https://openweathermap.org/api)
+3. Get your free API keys:
+   - **OpenWeatherMap**: Get from [OpenWeatherMap](https://openweathermap.org/api)
+   - **Google Gemini AI**: Get from [Google AI Studio](https://aistudio.google.com/) (Free tier: 1,500 requests/day)
 
-4. Create a `.env.local` file in the root directory and add your API key:
+4. Create a `.env.local` file in the root directory and add your API keys:
 
 ```
-NEXT_PUBLIC_WEATHER_API_KEY=your_api_key_here
+NEXT_PUBLIC_WEATHER_API_KEY=your_openweather_api_key_here
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
 ```
+
+💡 See [GEMINI_API_SETUP.md](./GEMINI_API_SETUP.md) for detailed Gemini AI setup instructions.
 
 5. Run the development server:
 
@@ -189,6 +214,9 @@ Create a `.env.local` file with the following variables:
 
 ```
 NEXT_PUBLIC_WEATHER_API_KEY=your_openweathermap_api_key
+
+# Optional: For advanced AI features (Free tier available!)
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
 ```
 
 **Note:** The API key must be prefixed with `NEXT_PUBLIC_` to be accessible in the browser environment.

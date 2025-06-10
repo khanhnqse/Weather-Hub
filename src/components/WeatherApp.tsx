@@ -12,6 +12,8 @@ import { TemperatureToggle } from "./TemperatureToggle";
 import { TemperatureUnit } from "@/utils/temperature";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
 import { WeatherAlerts } from "./WeatherAlerts";
+import { AIWeatherInsights } from "./AIWeatherInsights";
+import { AIWeatherChat } from "./AIWeatherChat";
 
 export default function WeatherApp() {
   const [city, setCity] = useState("");
@@ -164,8 +166,7 @@ export default function WeatherApp() {
       <DynamicBackground weather={weather} />
       {/* Main content with relative positioning to appear above background */}{" "}
       <div className="relative z-10">
-        <AppHeader />
-        <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
+        <AppHeader />        <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 animate-scaleIn">
           {" "}
           {/* Temperature Unit Toggle */}
           <TemperatureToggle
@@ -273,11 +274,17 @@ export default function WeatherApp() {
               weather={weather}
               temperatureUnit={temperatureUnit}
             />
-          )}
+          )}{" "}
           {/* Weather alerts - show when we have weather data */}
           {weather && (
             <div className="mt-6">
               <WeatherAlerts weather={weather} />
+            </div>
+          )}
+          {/* AI Weather Insights */}
+          {weather && (
+            <div className="mt-6">
+              <AIWeatherInsights weather={weather} />
             </div>
           )}
         </div>{" "}
@@ -288,6 +295,12 @@ export default function WeatherApp() {
               city={searchedCity}
               temperatureUnit={temperatureUnit}
             />
+          </div>
+        )}
+        {/* AI Weather Chat */}
+        {weather && (
+          <div className="mb-8">
+            <AIWeatherChat weather={weather} />
           </div>
         )}
       </div>
