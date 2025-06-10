@@ -61,7 +61,7 @@ export class GeminiWeatherService implements AIWeatherService {
     try {
       const context = this.createWeatherContext(weather);
       const prompt = `Bạn là trợ lý thời tiết chuyên nghiệp. Thời tiết hiện tại: ${context}. 
-Trả lời câu hỏi bằng tiếng Việt với định dạng markdown (sử dụng **in đậm** cho thông tin quan trọng, *in nghiêng* cho gợi ý, và danh sách khi cần thiết): ${question}`;
+Trả lời câu hỏi bằng tiếng Việt với định dạng markdown (sử dụng **in đậm** cho thông tin quan trọng, *in nghiêng* cho gợi ý, và danh sách khi cần thiết) (Lưu ý: Không trả lời các câu hỏi không liên quan): ${question}`;
       
       const response = await fetch(`${this.baseURL}/models/gemini-1.5-flash-latest:generateContent?key=${this.apiKey}`, {
         method: "POST",
