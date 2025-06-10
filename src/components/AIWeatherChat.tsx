@@ -134,7 +134,7 @@ export function AIWeatherChat({ weather }: AIWeatherChatProps) {
         <div className="flex items-center space-x-3">
           <span className="text-2xl">🤖</span>
           <div>
-            <h3 className="text-white font-semibold">Weather Hub AI</h3>
+            <h3 className="text-white font-semibold">Weather Hub AI (beta)</h3>
             <p className="text-sm text-white/70">
               {weather.name} • {weather.main.temp}°C
             </p>

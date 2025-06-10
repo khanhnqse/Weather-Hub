@@ -266,41 +266,44 @@ export default function WeatherApp() {
               onLocationRequest={requestLocation}
               locationDenied={locationDenied}
             />
-          )}
-          {/* Show errors */}
-          {error && !loading && <ErrorMessage error={error} />}{" "}
+          )}          {/* Show errors */}
+          {error && !loading && <ErrorMessage error={error} />}          {/* Main weather content - horizontal layout */}
           {weather && (
-            <WeatherDisplay
-              weather={weather}
-              temperatureUnit={temperatureUnit}
-            />
-          )}{" "}
-          {/* Weather alerts - show when we have weather data */}
-          {weather && (
-            <div className="mt-6">
-              <WeatherAlerts weather={weather} />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Weather display - takes 2 columns on large screens */}
+              <div className="lg:col-span-2">
+                <WeatherDisplay
+                  weather={weather}
+                  temperatureUnit={temperatureUnit}
+                />
+                
+                {/* Weather alerts below weather display */}
+                <div className="mt-6">
+                  <WeatherAlerts weather={weather} />
+                </div>
+              </div>
+              
+              {/* AI Weather Insights - takes 1 column on large screens */}
+              <div className="lg:col-span-1">
+                <AIWeatherInsights weather={weather} />
+              </div>
             </div>
-          )}
-          {/* AI Weather Insights */}
-          {weather && (
-            <div className="mt-6">
-              <AIWeatherInsights weather={weather} />
-            </div>
-          )}
-        </div>{" "}
-        {/* 5-day forecast chart - only show when we have weather data */}{" "}
+          )}</div>
+          {/* Weather content grid - horizontal layout */}
         {weather && searchedCity && (
-          <div className="mb-8">
-            <ForecastChart
-              city={searchedCity}
-              temperatureUnit={temperatureUnit}
-            />
-          </div>
-        )}
-        {/* AI Weather Chat */}
-        {weather && (
-          <div className="mb-8">
-            <AIWeatherChat weather={weather} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Left column: 5-day forecast chart */}
+            <div className="order-2 lg:order-1">
+              <ForecastChart
+                city={searchedCity}
+                temperatureUnit={temperatureUnit}
+              />
+            </div>
+            
+            {/* Right column: AI Weather Chat */}
+            <div className="order-1 lg:order-2">
+              <AIWeatherChat weather={weather} />
+            </div>
           </div>
         )}
       </div>

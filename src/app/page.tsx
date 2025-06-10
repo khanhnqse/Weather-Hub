@@ -9,9 +9,8 @@ export default function Home() {
   return (
     <HydrationBoundary
       fallback={
-        <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600">
-          <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
-            <div className="w-full max-w-lg">
+        <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600">          <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+            <div className="w-full max-w-7xl">{" "}
               <div className="text-center mb-12">
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-lg rounded-2xl mb-6 shadow-2xl">
                   <svg
