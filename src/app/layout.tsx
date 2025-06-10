@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WeatherHub - Khám phá thời tiết toàn cầu",
+  title: "WeatherHub",
   description:
     "Ứng dụng thời tiết hiện đại với giao diện đẹp, cung cấp thông tin thời tiết chính xác cho mọi thành phố trên thế giới.",
   icons: {
