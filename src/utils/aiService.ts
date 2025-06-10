@@ -57,11 +57,11 @@ export class GeminiWeatherService implements AIWeatherService {
       return this.getFallbackInsights(weather);
     }
   }
-
   async getChatResponse(question: string, weather: WeatherData): Promise<string> {
     try {
       const context = this.createWeatherContext(weather);
-      const prompt = `Bạn là trợ lý thời tiết. Thời tiết hiện tại: ${context}. Trả lời bằng tiếng Việt: ${question}`;
+      const prompt = `Bạn là trợ lý thời tiết chuyên nghiệp. Thời tiết hiện tại: ${context}. 
+Trả lời câu hỏi bằng tiếng Việt với định dạng markdown (sử dụng **in đậm** cho thông tin quan trọng, *in nghiêng* cho gợi ý, và danh sách khi cần thiết): ${question}`;
       
       const response = await fetch(`${this.baseURL}/models/gemini-1.5-flash-latest:generateContent?key=${this.apiKey}`, {
         method: "POST",
@@ -88,9 +88,10 @@ export class GeminiWeatherService implements AIWeatherService {
       return await localAI.getChatResponse(question, weather);
     }
   }
-
   private createInsightPrompt(weather: WeatherData): string {
-    return `Tạo gợi ý thời tiết cho: Vị trí ${weather.name}, nhiệt độ ${weather.main.temp}°C, thời tiết ${weather.weather[0].description}. Trả lời JSON: {"insights": [{"type": "outfit", "title": "Tiêu đề", "description": "Mô tả", "icon": "🌞", "confidence": 0.9, "priority": "high"}]}`;
+    return `Tạo 1 gợi ý thời tiết ngắn cho vị trí ${weather.name}, nhiệt độ ${weather.main.temp}°C, thời tiết ${weather.weather[0].description}. 
+Sử dụng định dạng markdown trong mô tả (**in đậm**, *nghiêng*, danh sách). 
+Trả lời JSON: {"insights": [{"type": "outfit", "title": "Tiêu đề", "description": "Mô tả với **từ khóa quan trọng** và *gợi ý cụ thể*", "icon": "🌞", "confidence": 0.9, "priority": "high"}]}`;
   }
 
   private createWeatherContext(weather: WeatherData): string {
@@ -138,14 +139,12 @@ export class GeminiWeatherService implements AIWeatherService {
 export class LocalAIWeatherService implements AIWeatherService {
   async generateInsights(weather: WeatherData): Promise<WeatherInsight[]> {
     const temp = weather.main.temp;
-    const insights: WeatherInsight[] = [];
-
-    if (temp > 30) {
+    const insights: WeatherInsight[] = [];    if (temp > 30) {
       insights.push({
         id: "local-hot",
         type: "outfit",
-        title: "Thời tiết nóng",
-        description: "Mặc quần áo nhẹ, thoáng mát và đội mũ.",
+        title: "Thời tiết nóng bức",
+        description: "**Mặc quần áo nhẹ** và *thoáng mát*. Nên chọn:\n- Áo cotton mỏng\n- Quần short hoặc váy\n- **Đội mũ** để bảo vệ khỏi nắng",
         icon: "🌞",
         confidence: 0.9,
         priority: "high"
@@ -155,7 +154,7 @@ export class LocalAIWeatherService implements AIWeatherService {
         id: "local-cold",
         type: "outfit", 
         title: "Thời tiết lạnh",
-        description: "Mặc áo khoác ấm và giữ ấm cơ thể.",
+        description: "**Giữ ấm cơ thể** là quan trọng. Nên mặc:\n- *Áo khoác dày*\n- Quần dài ấm\n- **Phụ kiện**: khăn quàng, găng tay",
         icon: "🧥",
         confidence: 0.9,
         priority: "high"
@@ -164,20 +163,28 @@ export class LocalAIWeatherService implements AIWeatherService {
 
     return insights;
   }
-
   async getChatResponse(question: string, weather: WeatherData): Promise<string> {
     const temp = weather.main.temp;
     const location = weather.name;
     
     if (question.toLowerCase().includes("mặc")) {
       if (temp > 30) {
-        return `Với nhiệt độ ${temp}°C ở ${location}, bạn nên mặc quần áo nhẹ và thoáng mát.`;
+        return `Với nhiệt độ **${temp}°C** ở ${location}, bạn nên:\n\n- *Mặc quần áo nhẹ* và thoáng mát\n- **Đội mũ** để chống nắng\n- Chọn vải cotton hoặc linen`;
       } else if (temp < 15) {
-        return `Thời tiết ${temp}°C ở ${location} khá lạnh, nên mặc áo khoác ấm.`;
+        return `Thời tiết **${temp}°C** ở ${location} khá lạnh, nên:\n\n- *Mặc áo khoác ấm*\n- **Đeo khăn quàng cổ**\n- Giữ ấm tay chân`;
+      }
+      return `Với **${temp}°C** ở ${location}, thời tiết *khá dễ chịu*. Bạn có thể mặc áo sơ mi hoặc áo thun nhẹ.`;
+    }
+    
+    if (question.toLowerCase().includes("hoạt động") || question.toLowerCase().includes("làm gì")) {
+      if (temp > 25 && temp < 35) {
+        return `Thời tiết **${temp}°C** ở ${location} rất phù hợp cho:\n\n- *Đi dạo công viên*\n- **Picnic ngoài trời**\n- Chụp ảnh phong cảnh`;
+      } else if (temp < 15) {
+        return `Với **${temp}°C** ở ${location}, nên:\n\n- *Ở trong nhà ấm áp*\n- **Uống trà hoặc cà phê nóng**\n- Đọc sách bên cửa sổ`;
       }
     }
     
-    return `Thời tiết hiện tại ở ${location}: ${temp}°C. Tôi có thể tư vấn về trang phục và hoạt động phù hợp.`;
+    return `Thời tiết hiện tại ở **${location}**: **${temp}°C**. Tôi có thể tư vấn về *trang phục* và **hoạt động** phù hợp. Hãy hỏi tôi!`;
   }
 }
 

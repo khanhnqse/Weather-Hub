@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import { WeatherData } from "@/types/weather";
 import { createAIWeatherService } from "@/utils/aiService";
 
@@ -20,7 +21,7 @@ export function AIWeatherChat({ weather }: AIWeatherChatProps) {
     {
       id: "welcome",
       type: "ai",
-      content: `Xin chào! Tôi là trợ lý AI thời tiết. Hiện tại ${weather.name} có ${weather.weather[0].description} với nhiệt độ ${weather.main.temp}°C. Bạn có câu hỏi gì về thời tiết không?`,
+      content: `Xin chào! Tôi là trợ lý AI WeatherHub. Hiện tại ${weather.name} có ${weather.weather[0].description} với nhiệt độ ${weather.main.temp}°C. Bạn có câu hỏi gì về thời tiết không?`,
       timestamp: new Date(),
     },
   ]);
@@ -175,7 +176,37 @@ export function AIWeatherChat({ weather }: AIWeatherChatProps) {
                   : "bg-white/20 text-white"
               }`}
             >
-              <p className="text-sm leading-relaxed">{message.content}</p>
+              {message.type === "user" ? (
+                <p className="text-sm leading-relaxed">{message.content}</p>
+              ) : (
+                <div className="text-sm leading-relaxed prose prose-sm prose-invert max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => (
+                        <p className="mb-2 last:mb-0">{children}</p>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className="text-white font-semibold">
+                          {children}
+                        </strong>
+                      ),
+                      em: ({ children }) => (
+                        <em className="text-yellow-200">{children}</em>
+                      ),
+                      ul: ({ children }) => (
+                        <ul className="list-disc list-inside space-y-1">
+                          {children}
+                        </ul>
+                      ),
+                      li: ({ children }) => (
+                        <li className="text-white/90">{children}</li>
+                      ),
+                    }}
+                  >
+                    {message.content}
+                  </ReactMarkdown>
+                </div>
+              )}
               <p className="text-xs opacity-70 mt-1">
                 {message.timestamp.toLocaleTimeString()}
               </p>

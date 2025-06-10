@@ -24,6 +24,7 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
 - 🤖 **AI Weather Assistant** - Intelligent weather insights and interactive chat
 - 💬 **Natural Language Queries** - Ask questions about weather in Vietnamese
 - 🧠 **Smart Recommendations** - AI-powered outfit, activity, and health advice
+- ✨ **Beautiful Markdown Formatting** - AI responses with **bold**, _italic_, and lists
 - 📱 **Progressive Web App** - Installable on mobile devices
 - 📍 **Geolocation Support** - Optional automatic location detection
 - 🔍 Detailed weather information including:
@@ -66,8 +67,10 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
 - **Smart Insights**: AI analyzes weather conditions and provides personalized recommendations
 - **Interactive Chat**: Ask natural language questions about weather conditions
 - **Contextual Advice**: Get outfit suggestions, activity recommendations, and health tips
+- **Beautiful Formatting**: AI responses with **bold text**, _italics_, and organized lists
 - **Dual AI Modes**: Local pattern-based AI (free) or Google Gemini integration (advanced)
 - **Vietnamese Language**: Full AI responses in Vietnamese language
+- **Markdown Support**: Rich text formatting for better readability
 
 ### 📍 Geolocation Features
 
@@ -105,6 +108,7 @@ npm install
 ```
 
 3. Get your free API keys:
+
    - **OpenWeatherMap**: Get from [OpenWeatherMap](https://openweathermap.org/api)
    - **Google Gemini AI**: Get from [Google AI Studio](https://aistudio.google.com/) (Free tier: 1,500 requests/day)
 

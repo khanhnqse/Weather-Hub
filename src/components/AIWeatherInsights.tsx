@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import ReactMarkdown from "react-markdown";
 import { WeatherData } from "@/types/weather";
-import {
-  WeatherInsight,
-  createAIWeatherService,
-} from "@/utils/aiService";
+import { WeatherInsight, createAIWeatherService } from "@/utils/aiService";
 
 interface AIWeatherInsightsProps {
   weather: WeatherData;
@@ -157,11 +155,35 @@ export function AIWeatherInsights({ weather }: AIWeatherInsightsProps) {
                         : insight.priority === "medium"
                         ? "Trung bình"
                         : "Thông tin"}
-                    </span>
+                    </span>{" "}
                   </div>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    {insight.description}
-                  </p>
+                  <div className="text-white/80 text-sm leading-relaxed prose prose-sm prose-invert max-w-none">
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => (
+                          <p className="mb-2 last:mb-0">{children}</p>
+                        ),
+                        strong: ({ children }) => (
+                          <strong className="text-white font-semibold">
+                            {children}
+                          </strong>
+                        ),
+                        em: ({ children }) => (
+                          <em className="text-yellow-200">{children}</em>
+                        ),
+                        ul: ({ children }) => (
+                          <ul className="list-disc list-inside space-y-1">
+                            {children}
+                          </ul>
+                        ),
+                        li: ({ children }) => (
+                          <li className="text-white/80">{children}</li>
+                        ),
+                      }}
+                    >
+                      {insight.description}
+                    </ReactMarkdown>
+                  </div>
                   {insight.confidence && (
                     <div className="mt-2 flex items-center space-x-2">
                       <span className="text-white/60 text-xs">Độ tin cậy:</span>
