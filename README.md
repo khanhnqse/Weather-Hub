@@ -37,58 +37,6 @@ A beautiful, feature-rich weather application built with Next.js 15, TypeScript,
   - 5-day forecast with charts
   - Weather condition icons
 
-## Key Features Explained
-
-### 🌡️ Temperature Unit Toggle
-
-- Seamless switching between Celsius and Fahrenheit
-- Real-time conversion of all temperature displays
-- Persists user preference throughout the session
-- Updates charts, forecasts, and current weather simultaneously
-
-### 📊 Interactive 5-Day Forecast
-
-- Beautiful Chart.js powered weather charts
-- Daily temperature trends with min/max ranges
-- Humidity and precipitation data visualization
-- Responsive design that works on all devices
-- Hover tooltips for detailed information
-
-### 🔍 Smart Recent Searches
-
-- Automatically saves successful city searches
-- Stores up to 5 recent searches in localStorage
-- Quick-click access to previously searched cities
-- Persistent across browser sessions
-- Easy clear functionality
-
-### 🤖 AI Weather Assistant
-
-- **Smart Insights**: AI analyzes weather conditions and provides personalized recommendations
-- **Interactive Chat**: Ask natural language questions about weather conditions
-- **Contextual Advice**: Get outfit suggestions, activity recommendations, and health tips
-- **Beautiful Formatting**: AI responses with **bold text**, _italics_, and organized lists
-- **Dual AI Modes**: Local pattern-based AI (free) or Google Gemini integration (advanced)
-- **Vietnamese Language**: Full AI responses in Vietnamese language
-- **Markdown Support**: Rich text formatting for better readability
-
-### 📍 Geolocation Features
-
-- **Optional Location Access**: User-friendly permission prompts
-- **Automatic Weather Loading**: Display weather for current location
-- **Privacy-First**: Location access is completely optional
-- **Fallback Support**: Graceful degradation when location is unavailable
-
-### ⚡ Performance Optimizations
-
-- Smart API call management (prevents unnecessary requests)
-- Separated data fetching from data processing
-- useMemo and useCallback for optimal re-renders
-- Lazy loading and efficient state management
-- Image optimization with Next.js Image component
-- Code splitting and tree shaking
-- Compressed assets and optimized bundle size
-
 ## Getting Started
 
 ### Prerequisites
@@ -128,35 +76,6 @@ npm run dev
 ```
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Usage
-
-1. **Search for Weather:**
-
-   - Enter the name of any city in the search box
-   - Click the "Tìm" (Search) button or press Enter
-   - View the current weather information for that city
-
-2. **Switch Temperature Units:**
-
-   - Use the toggle button at the top to switch between Celsius (°C) and Fahrenheit (°F)
-   - All temperatures throughout the app will update instantly
-
-3. **View 5-Day Forecast:**
-
-   - After searching for a city, scroll down to see the interactive forecast chart
-   - View daily temperature trends, humidity, and precipitation chances
-   - Hover over chart points for detailed information
-
-4. **Recent Searches:**
-
-   - Previously searched cities are automatically saved
-   - Click on any recent search to quickly load that city's weather
-   - Use "Xóa tất cả" (Clear All) to remove recent searches
-
-5. **Error Handling:**
-   - If a city is not found, an error message will be displayed
-   - Check your internet connection if data fails to load
 
 ## API
 
